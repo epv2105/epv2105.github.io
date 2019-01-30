@@ -1,0 +1,22 @@
+body{
+    padding:20px;
+}
+#title{
+    font-family:helvetica;
+    font-size:34px;
+    color:Darkcyan;
+	background-color:powderblue;}
+#subtitle{
+    font-family:helvetica;
+    font-size:16px;
+  font-style:italic;  color:darkgoldenrod;	background-color:GhostWhite;
+}
+li{
+    padding-bottom:20px;
+}
+#content{
+    padding:15px;
+    font-family:helvetica;
+    font-size:20px;
+    color:darkgoldenrod;	background-color:ghostwhite;
+}
