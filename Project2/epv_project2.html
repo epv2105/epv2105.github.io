@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>NYC Parks: Know the Dangers</title><!-- make your own with https://www.favicon.cc/-->
+        <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon" href="css/style.css"/>
+		<script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
+		<style type="text/css">
+            body{font-family:helvetica;}
+
+            #chart1{padding:10px;}
+		</style>
+	</head>
+    <div id="chart1"></div>
+	<body>
+		<div id="title">NYC Parks: Urban Landscapes or Accidents Waiting to Happen?</div>
+		<p>Green initiatives such as Mayor Michael Bloomberg's "Million Trees" program are often lauded
+		for making cities more sustainable, but this is not necessarily the case. Aging, diseased, and damaged
+		trees all present serious risks to NYC park-goers, often neglected due to a redistribution of funds
+		to meet such initiatives. Above is a chart of the city's most notorious parks, ranked by number
+	 	of 311 complaints involving diseased, dead, or damaged trees. Hover over each of the bars to learn the
+		exact number of incidents logged since January 1, 2019, and think twice before
+		heading for one of these parks.</p>
+		<script type="text/javascript">
+
+		d3.csv("311_Trees.csv")
+				.then(function(data){
+						var zipcodeDictionary = {}
+
+						for(var d in data){
+								var zipcode = data[d]["Incident Zip"]
+
+								var existingKeys = Object.keys(zipcodeDictionary)
+
+								if(existingKeys.indexOf(zipcode)==-1){//if zipcode is not already in dictionary
+										zipcodeDictionary[zipcode]=1//set the countof that zipcode to 1
+								}else{//if it is already in there
+										//add one to the count
+										zipcodeDictionary[zipcode]=zipcodeDictionary[zipcode]+1
+								}
+						}
+
+					 // console.log(zipcodeDictionary)
+
+						var zipcodeArray = Object.keys(zipcodeDictionary).map(function(key) {
+							return [key, zipcodeDictionary[key]];
+						});
+//                console.log(zipcodeArray)
+						// Sort the array based on the second element
+						zipcodeArray.sort(function(first, second) {
+							return second[1] - first[1];
+						});
+						var top10 = zipcodeArray.slice(0,10)
+
+						console.log(top10)
+				})
+				.catch(function(error){ console.log("error")})
+				//Using this data I created a new csv file with the names of each park
+            d3.csv("park_dataset.csv")
+            .then(function(data){
+                drawChart(data)
+            })
+            .catch(function(error){ console.log("error")})
+
+
+            function drawChart(data){
+                var w = 1300
+                var h = 750
+                var padding = 50
+
+                //the svg
+                var svg = d3.select("#chart1")
+                            .append("svg")
+                            .attr("width",w+padding*2)
+                            .attr("height",h+padding*2)
+
+                //ordinal x-scale for my data
+                var xScale = d3.scaleBand().domain(["Marine","Prospect","Floyd Bennet FLD",
+																										"Blue Heron, Wolfe's Pond","Liberty",
+																										"W.T.D. Wildlife Refuge","FT Greene, Cadman PLZ",
+																										"Shore RD","Great Kills, Latourette",
+																										"Francis Lewis, Powell's CV"]).range([0,w]).round(true).paddingInner(.3)
+                //my corresponding x axis - nominal
+                var xAxis = d3.axisBottom()
+                    .scale(xScale)
+
+                svg.append("g")
+    				.attr("class", "axis")
+
+                    .attr("transform", "translate("+padding+"," + (h) + ")")
+                    .call(xAxis);
+
+                var yScale = d3.scaleLinear().domain([0,220]).range([h,0])
+                var yAxis = d3.axisLeft()
+                    .scale(yScale)
+                svg.append("g")
+                    .attr("class", "axis")
+    				.attr("transform", "translate("+padding+",0)")
+    				.call(yAxis);
+
+
+								svg.selectAll("rect")
+                    .data(data)
+                    .enter()
+                    .append("rect")
+                    .attr("x",function(d,i){
+                        return xScale(d.park) + padding
+                    })
+                    .attr("y",function(d){
+                        return yScale(d["c1"])
+                    })
+                    .attr("width",xScale.bandwidth())
+                    .attr("height",function(d){
+                        return h - yScale(d.c1)
+
+                    })
+
+										.attr("fill", "green")
+										.on("click", function(d) {
+												console.log(d["c1"]);
+										})
+										.on("mouseover", function() {
+												d3.select(this)
+													.attr("fill", "green");
+										})
+										.on("mouseout", function() {
+												d3.select(this)
+													//below are two lines of code to create a transition, but including them creates a problem
+													.transtion("fade")
+													.duration(250)
+													.attr("fill", "rgb(0, 0, 0)");
+										})
+										.on("mouseover",function(d){
+
+												var tx = parseFloat(d3.select(this).attr("x")) + xScale.bandwidth() / 2 -10;
+												var ty = parseFloat(d3.select(this).attr("y")) - 10;
+												svg.append("text")
+													.text(d.c1)
+
+														.attr("x",tx)
+														.attr("y",ty)
+														.attr("class","tooltip")
+										})
+										.on("mouseout",function(d){
+												d3.selectAll(".tooltip")
+												.remove()
+										});
+                }
+		</script>
+	</body>
+</html>
