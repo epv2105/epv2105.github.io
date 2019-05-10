@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <link rel="stylesheet" href="style.css"> -->
+		<title>Future Scenario</title>
+		<!-- discourage the browser from caching the page -->
+   		<meta http-equiv='Cache-Control' content='no-cache, no-store, must-revalidate' />
+    	<meta http-equiv='Pragma' content='no-cache' />
+    	<meta http-equiv='Expires' content='0' />
+
+    	<!-- tells mobile devices how to scale the page -->
+    	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    	<!-- stylesheet links -->
+    	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css' rel='stylesheet' />
+    	<link href='style.css' rel='stylesheet' />
+
+    	<!-- javascript links -->
+    	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js'></script>
+    	<!-- Leaflet -->
+    	<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin=""></script>
+    	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
+    	<script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
+ 		<script src="https://unpkg.com/d3-simple-slider"></script>
+
+
+	</head>
+	<body>
+		<script type="text/javascript" src="PRmunicipality.js"></script>
+		<div class="grid">
+			<div class="textall">
+				<div class="title">Predicting Puerto Rico</div>
+				<div class="body">
+					The maps at left represent the present distribution of average weekly income, the number of families receiving Temporary Assistance to Needy Families benefits, and unemployment rates in Puerto Rico per municipality. These unequal distributions are likely to change, for better or worse, with the arrival of $18.5 billion in disaster relief aid and general elections to take place this November.
+					Adjust each of the sliders below to observe how altering one or more of these factors through policy changes might shape Puerto Rico moving into the future. Click on one of the buttons at left to explore distributions corresponding to future scenarios in which the island has been overrun by tourist operations or organized into a collective landtrust.
+				</div>
+				<div class="body">
+				</div>
+				<div class="body">
+Puerto Rico has severe income inequality, higher than that of all but two nations world-wide. Adjust the first slider to show Puerto Rico with a larger or smaller income gap (for example, due to changes in minimum wage laws).
+				</div>
+				<div class="body">
+The Temporary Assistance to Needy Families (TANF) program provides financial support to families unable to generate enough income to support their household. Adjust slider 2 to see which municipalities would most be affected by a cut or increase in this social welfare program.
+				</div>
+				<div class="body">
+The average unemployment rate of Puerto Rico more than doubles that of the United States. Adjust slider 3 to see how measures taken to combat unemployment, such as job creation programs, alter the unemployment distribution in Puerto Rico.
+<!-- As a result of predatory extraction laws that offer American developers financial incentives for building in Puerto Rico, many businesses develop an operation on the island that doesn’t require creating many jobs for local residents. -->
+				</div>
+				<div class="body">
+					Data sourced from the <a href="https://dev.socrata.com/foundry/data.pr.gov/grwc-ezib">Puerto Rico Department of Labor and Human Resources</a> and the <a href="https://data.pr.gov/en/Familia-y-Servicio-Social/Estadisticas-de-Beneficios-de-PAN-y-TANF/rd77-7s4b">Puerto Rico Department of the Family (ADSEF)</a>.
+					Original mathematical predictive model written by Esteban Vanegas and Qi Yang.
+				</div>
+			</div>
+			<div class="sliderbar">
+				<!-- Slider Bar Put Here -->
+				<div id="A1">Close/Broaden the Income Gap</div>
+				<div id="A2">Expand/Cut Welfare Spending</div>
+				<div id="A3">Incentivize Job Creation</div>
+			</div>
+			<div class="scenario">
+				<div class="singapore">
+					<div id="button1">Tourism</div>
+				</div>
+				<div class="landtrust">
+					<div id="button2">Landtrust</div>
+				</div>
+				<div class="current">
+					<div id="button3">Current</div>
+				</div>
+			</div>
+			<div class="mapall" id="mapall">
+				<div class="mapUnemployment" id="mapUnemployment"></div>
+				<div class="mapWelfare" id="mapWelfare"></div>
+				<div class="mapAnnualincome" id="mapAnnualincome"></div>
+				<script type="text/javascript" src="map.js"></script>
+				<script type="text/javascript" src="sliders2.js"></script>
+			</div>
+			<div class='legend' id="legend">
+				<div class='legendAnnualincome' id="legendAnnualincome">
+					<p>300USD</p>
+					<img src = "weeklyIncomeGradient.png" />
+					<p>900USD</p>
+				</div>
+				<div class='legendWelfare' id='legendWelfare'>
+					<p>30ppl</p>
+					<img src = "tanfColor.png" />
+					<p>3500ppl</p>
+				</div>
+				<div class='legendUnemployment' id='legendUnemployment'>
+					<p>3%</p>
+					<img src = "unemploymentGradient.png" />
+					<p>15%</p>
+				</div>
+			</div>
+		</div>
+	</body>
